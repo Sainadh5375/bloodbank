@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Blood</title>
+</head>
+
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+    
+    h1, h2 {
+        text-align: center;
+    }
+    
+    #add-blood {
+        width: 50%;
+        margin: 20px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    label {
+        margin-bottom: 8px;
+    }
+    
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    
+    select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" height="18px"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/><path fill="none" d="M0 0h24v24H0z"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+    }
+    
+    button[type="submit"] {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    button[type="submit"]:hover {
+        background-color: #666;
+    }
+    
+</style>
+<body>
+    <h1>Add Blood</h1>
+    <section id="add-blood">
+        <h2>Add Blood</h2>
+        <form action="add_blood.php" method="POST">
+            <label for="reg_id" >Enter Registration id:</label>
+            <input type="text" id="reg_id" name="reg_id" required>
+            <label for="blood-type">Blood Type:</label> 
+            <select id="blood-type" name="blood-type" required>
+                <option value="">Select Bood Grp</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+            </select>
+
+            <label for="quantity">Quantity(ML):</label>
+            <input type="number" id="quantity" name="quantity" required>
+
+            <label for="expiry-date">Expiry Date:</label>
+            <input type="date" id="expiry-date" name="expiry-date" required>
+
+            <button type="submit">Add Blood</button>
+        </form>
+    </section>
+</body>
+</html>
