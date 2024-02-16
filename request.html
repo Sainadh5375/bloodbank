@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+    <style>
+        .error {
+            color: red;
+        }
+body {
+    font-family: Arial, sans-serif;
+    background-color: #95f1a7;
+
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="submit"],
+input[type="reset"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+input[type="submit"]:hover,
+input[type="reset"]:hover {
+    background-color: #45a049;
+}
+
+label {
+    font-weight: bold;
+    color: #333333;
+}
+
+/* Style radio buttons */
+input[type="radio"] {
+    margin-right: 5px;
+}
+
+/* Add animation to the buttons */
+button[type="button"] {
+    background-color: #008CBA;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button[type="button"]:hover {
+    background-color: #0066cc;
+}
+
+/* Add animation to the form */
+form {
+    animation: fadein 1s;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Add animation to labels */
+label {
+    transition: transform 0.3s ease;
+}
+
+label:hover {
+    transform: scale(1.1);
+    color: #008CBA;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+    border-color: #008CBA;
+    outline: none;
+    box-shadow: 0 0 5px #008CBA;
+}
+
+/* Add animation to submit and reset buttons */
+input[type="submit"],
+input[type="reset"] {
+    transition: background-color 0.4s ease;
+}
+
+    </style>
+    <script>
+        function validateForm() {
+            if (!validateAge()) {
+                return false;
+            }
+            return true;
+        }
+        function validateAge() {
+            var age = document.getElementById('Age').value;
+            if (age < 0) {
+                alert("Age should be a positive number!");
+                return false;
+            }
+            return true;
+        }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+                    document.getElementById("latitude").value = latitude;
+                    document.getElementById("longitude").value = longitude;
+                }, function(error) {
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            alert("User denied the request for geolocation.");
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            alert("Location information is unavailable.");
+                            break;
+                        case error.TIMEOUT:
+                            alert("The request to get user location timed out.");
+                            break;
+                        case error.UNKNOWN_ERROR:
+                            alert("An unknown error occurred.");
+                            break;
+                    }
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+        
+
+        function showPosition(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            document.getElementById("demo").innerHTML = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+        }
+
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    document.getElementById("demo").innerHTML = "User denied the request for geolocation.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    document.getElementById("demo").innerHTML = "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    document.getElementById("demo").innerHTML = "The request to get user location timed out.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    document.getElementById("demo").innerHTML = "An unknown error occurred.";
+                    break;
+            }
+        }
+    </script>
+</head>
+<body>
+    
+    <form action="submit_form.php" onsubmit="return validateForm()" method="post" enctype="multipart/form-data">
+        <label for="fname">Name:</label>
+        <input type="text" id="fname" name="fname" required>
+        <br><br>
+        <label for="Age">Age:</label>
+        <input type="number" id="Age" name="Age" required min="0">
+        <br><br>
+        <label for="Address">Address:</label>
+        <button type="button" id="Adress" name="Adress" onclick="getLocation()">Get My Location</button>
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
+        <p id="demo"></p>
+        <br><br>        
+
+        <p>Please select your gender:</p>
+        <input type="radio" id="Male" name="Gender" value="MALE" required> 
+        <label for="Male"> Male</label> 
+        <input type="radio" id="Female" name="Gender" value="FEMALE" required> 
+        <label for="Female"> Female</label> 
+        <input type="radio" id="Prefer_not_to_say" name="Gender" value="Prefer not to say" required> 
+        <label for="Prefer_not_to_say"> Prefer Not to say</label> 
+        <br><br>
+
+        <p>Select Blood Group:</p>
+        <input type="radio" id="A+" name="Blood_Group" value="A+" required>
+        <label for="A+" > A+ </label>
+        <span style="margin-left:2em"></span>
+        <input type="radio" id="A-" name="Blood_Group" value="A-" required>
+        <label for="A-" > A- </label>
+        <br>
+        <input type="radio" id="B+" name="Blood_Group" value="B+" required>
+        <label for="B+" > B+ </label>
+        <span style="margin-left:2em"></span>
+
+        <input type="radio" id="B-" name="Blood_Group" value="B-" required>
+        <label for="B-" > B- </label>
+        <br>
+        <input type="radio" id="O+" name="Blood_Group" value="O+" required>
+        <label for="O+" > O+ </label>
+        <span style="margin-left:2em"></span>
+
+        <input type="radio" id="O-" name="Blood_Group" value="O-" required>
+        <label for="O-" > O- </label>
+        <br>
+        <input type="radio" id="AB+" name="Blood_Group" value="AB+" required>
+        <label for="AB+" > AB+ </label>
+        <span style="margin-left:1.32em"></span>
+        <input type="radio" id="AB-" name="Blood_Group" value="AB-" required>
+        <label for="AB-" > AB- </label>
+        <br><br>
+        <label for="Reason">Reason:</label><br><br>
+        <textarea id="Reason" name="Reason" rows="4" cols="90" required></textarea>
+        <br><br>
+        <label for="Quantity">Enter Quantity(ML):</label>
+        <input type="number" id="Quantity" name="Quantity" required min="0">
+        <br><br>
+        <label for="Optional">Optional Details of Patient:</label><br><br>
+        <textarea id="Optional" name="Optional" rows="4" cols="90"></textarea>
+        <br><br>
+        <input type="submit" value="Submit">
+        <input type="reset" value="Reset">
+    </form>
+</body>
+</html>

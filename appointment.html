@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Page</title>
+</head>
+<style>
+    
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f0f0f0;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      
+      form {
+        display: flex;
+        flex-direction: column;
+        background-color: #fff; /* Form background color */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+      
+      label {
+        margin-bottom: 8px;
+      }
+      
+      input,
+      select {
+        padding: 8px;
+        margin-bottom: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      body {
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-color: rgb(153, 244, 214);
+    }
+    
+      button:hover {
+        background-color: #0056b3;
+      }
+      
+      /* Responsive styles */
+      @media (max-width: 600px) {
+        .container {
+          width: 100%;
+          padding: 10px;
+        }
+      }
+      
+</style>
+<body  >
+    
+    <div class="container">
+        <form action="donate.html" method="post" id="appointment-form">
+            <label for="appointment-date">Appointment Date</label>
+            <input type="date" id="appointment-date" name="appointment-date" min="" required>
+
+            <label for="appointment-time">Appointment Time</label>
+            <select id="appointment-time" name="appointment-time" required>
+            </select>
+
+            <label for="select-dist">Select Center:</label>
+            <select id="select-dist" name="select-dist" required>
+                <option value="">Select Center</option>
+            </select>            
+            <button type="submit" class="btn">Next</button>
+            
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectDist = document.getElementById('select-dist');
+            const appointmentDateInput = document.getElementById('appointment-date');
+            const appointmentTimeSelect = document.getElementById('appointment-time');
+            const appointmentForm = document.getElementById('appointment-form');
+    
+            const values = ["SRI(Srikakulam)", "PM(Parvathipuram Manyam)", "VZ(Vizianagaram)", "VS(Visakhapatnam)", "AS(Alluri Sitharama Raju)", "AK(Anakapalli)", "KK(Kakinada)", "EG(East Godavari)", "KN(Dr. B. R. Ambedkar Konaseema)", "EL(Eluru)", "WG(West Godavari)", "NT(NTR)", "KR(Krishna)", "PL(Palnadu)", "GU(Guntur)", "BP(Bapatla)", "PR(Prakasam)", "NE(Sri Potti Sriramulu Nellore)", "KU(Kurnool)", "NN(Nandyal)", "AN(Anantapur)", "SS(Sri Sathya Sai)", "CU(YSR)", "AM(Annamayya)", "TR(Tirupati)", "CH(Chittoor)"];
+    
+            values.forEach(value => {
+                const optionZ1 = document.createElement('option');
+                optionZ1.value = value + "_Z1";
+                optionZ1.textContent = value + "_Z1";
+                selectDist.appendChild(optionZ1);
+    
+                const optionZ2 = document.createElement('option');
+                optionZ2.value = value + "_Z2";
+                optionZ2.textContent = value + "_Z2";
+                selectDist.appendChild(optionZ2);
+            });
+    
+            // Define lunch break (1 PM - 2 PM) and closing time (7 PM)
+            const lunchBreakStart = 13;
+            const lunchBreakEnd = 14;
+            const closingTime = 19;
+    
+            function populateAppointmentTimes() {
+                // Clear previous options
+                appointmentTimeSelect.innerHTML = '';
+    
+                let currentHour = new Date().getHours();
+                let nextAvailableHour = currentHour < lunchBreakStart ? lunchBreakStart :
+                                        currentHour < lunchBreakEnd ? lunchBreakEnd :
+                                        currentHour < closingTime ? currentHour + 1 : lunchBreakStart;
+    
+                while (nextAvailableHour <= closingTime) {
+                    if (nextAvailableHour !== lunchBreakStart) {
+                        const option = document.createElement('option');
+                        option.value = (nextAvailableHour < 10 ? '0' + nextAvailableHour : nextAvailableHour) + ':00';
+                        option.textContent = (nextAvailableHour < 10 ? '0' + nextAvailableHour : nextAvailableHour) + ':00';
+                        appointmentTimeSelect.appendChild(option);
+                    }
+    
+                    nextAvailableHour++;
+                }
+            }
+    
+            function disableSundays(date) {
+                return date.getDay() !== 0;
+            }
+    
+            const currentDate = new Date();
+            appointmentDateInput.min = currentDate.toISOString().split('T')[0];
+    
+            populateAppointmentTimes();
+    
+            appointmentDateInput.addEventListener('change', function() {
+                const selectedDate = new Date(appointmentDateInput.value);
+                if (disableSundays(selectedDate)) {
+                    if (selectedDate.toDateString() === currentDate.toDateString()) {
+                        populateAppointmentTimes();
+                    } else {
+                        appointmentTimeSelect.innerHTML = '';
+                        for (let hour = 8; hour <= closingTime; hour++) {
+                            if (hour !== lunchBreakStart) {
+                                const option = document.createElement('option');
+                                option.value = (hour < 10 ? '0' + hour : hour) + ':00';
+                                option.textContent = (hour < 10 ? '0' + hour : hour) + ':00';
+                                appointmentTimeSelect.appendChild(option);
+                            }
+                        }
+                    }
+                } else {
+                    alert("Sorry, we are closed on Sundays. Please choose another date.");
+                    appointmentDateInput.value = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
